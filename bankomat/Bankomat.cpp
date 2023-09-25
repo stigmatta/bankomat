@@ -30,6 +30,8 @@ unsigned int Bankomat::loading_sum(int money)
 	int i = SIZE;
 	while (tmp > 0)
 	{
+		if (i < 0)
+			break;
 		if (tmp % nominal[i] == 0)
 		{
 			tmp -= nominal[i];
