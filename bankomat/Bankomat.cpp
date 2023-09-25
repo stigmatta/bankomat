@@ -7,67 +7,54 @@ Bankomat::Bankomat()
 	current_sum = one_day_max = one_day_min = 0;
 	identification = "";
 }
-Bankomat::Bankomat(string identification, unsigned int current_sum, unsigned int one_day_min, unsigned int one_day_max)
+Bankomat::Bankomat(string identification, unsigned int current_sum, unsigned int one_day_min, unsigned int one_day_max,initializer_list <unsigned int>nominal)
 {
 	this->identification = identification;
 	this->current_sum = current_sum;
 	this->one_day_max = one_day_max;
 	this->one_day_min = one_day_min;
+	this->nominal = nominal;
 }
 unsigned int Bankomat::loading_sum(int money)
 {
-	int tmp = money;
 	if (money > one_day_max || money < one_day_min)
 	{
 		cout << "You cant load to your bank account this amount of money" << endl;
 		return current_sum;
 	}
-	if (money % 10 != 0)
-	{
-		cout << "You cant load to your bank account this amount of money" << endl;
-		return current_sum;
-	}
-	int i = SIZE;
-	while (tmp > 0)
-	{
-		if (i < 0)
-			break;
-		if (tmp % nominal[i] == 0)
-			tmp -= nominal[i];
-		else
-			i--;
-	}
-	if (tmp == 0)
-		current_sum += money;
-	cout << "Congratulations! You loaded " << money << " dollars to your bank account" << endl;
+	current_sum += money;
+	cout << "Congratulations! You loaded " << money << " dollars from your bank account" << endl;
 	return current_sum;
+}
+initializer_list <unsigned int> Bankomat:: getNominal()
+{
+	return nominal;
 }
 unsigned int Bankomat::withdraw_sum(int money)
 {
 	int tmp = money;
+	bool flag = false;
 	if (money > one_day_max || money < one_day_min)
 	{
 		cout << "You cant withdraw from your bank account this amount of money" << endl;
 		return current_sum;
 	}
-	if (money % 10 != 0)
+	if (money % *(nominal.begin()) != 0)
 	{
 		cout << "You cant withdraw from your bank account this amount of money" << endl;
 		return current_sum;
 	}
-	int i = SIZE;
-	while (tmp > 0)
+	for (auto x = nominal.begin(); x != nominal.end(); x++)
 	{
-		if (tmp % nominal[i] == 0)
-		{
-			tmp -= nominal[i];
-		}
-		else
-			i--;
+		if (money % *(x) == 0)
+			flag = true;
 	}
-	if (tmp == 0)
+	if (flag)
+	{
 		current_sum -= money;
-	cout << "Congratulations! You withdrawed " << money << " dollars from your bank account" << endl;
+		cout << "Congratulations! You withdrawed " << money << " dollars from your bank account" << endl;
+
+	}
 	return current_sum;
 }
 string Bankomat::convert_to_string()
