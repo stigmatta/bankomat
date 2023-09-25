@@ -83,6 +83,8 @@ string Bankomat::convert_to_string()
 		rez+=digit;
 		tmp /= 10;
 	}
-	reverse(rez.begin(),rez.end());
+	for (int i = 0; i < rez.length()/2; i++)
+		swap(rez[i], rez[rez.length() - i-1]);
+	/*reverse(rez.begin(),rez.end());*/
 	return rez;
 }
